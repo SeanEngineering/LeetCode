@@ -29,34 +29,26 @@ const isValidSudoku = (board) => {
 
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
-            if (board[row][col] == '.') {
-                break;
-            } else if (setRow[row]?.includes(board[row][col])) {
-                return false;
-            } else if (setCol[col]?.includes(board[row][col])) {
-                return false;
+            const index = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+            const char = board[row][col];
+            if (char == '.') {
+                continue;
             } else if (
-                setBox[(Math.floor(row / 3), Math.floor(col / 3))]?.includes(
-                    board[row][col]
-                )
+                setRow[row]?.includes(char) ||
+                setCol[col]?.includes(char) ||
+                setBox[index]?.includes(char)
             ) {
-                console.log(setBox);
                 return false;
             } else {
                 setCol[col]
-                    ? (setCol[col] = [...setCol[col], board[row][col]])
-                    : (setCol[col] = [board[row][col]]);
+                    ? (setCol[col] = [...setCol[col], char])
+                    : (setCol[col] = [char]);
                 setRow[row]
-                    ? (setRow[row] = [...setRow[row], board[row][col]])
-                    : (setRow[row] = [board[row][col]]);
-                setBox[(Math.floor(row / 3), Math.floor(col / 3))]
-                    ? (setBox[(Math.floor(row / 3), Math.floor(col / 3))] = [
-                          ...setBox[(Math.floor(row / 3), Math.floor(col / 3))],
-                          board[(row, col)],
-                      ])
-                    : (setBox[(Math.floor(row / 3), Math.floor(col / 3))] = [
-                          board[row][col],
-                      ]);
+                    ? (setRow[row] = [...setRow[row], char])
+                    : (setRow[row] = [char]);
+                setBox[index]
+                    ? (setBox[index] = [...setBox[index], char])
+                    : (setBox[index] = [char]);
             }
         }
     }
@@ -64,15 +56,15 @@ const isValidSudoku = (board) => {
 };
 
 const board = [
-    ['5', '3', '.', '.', '7', '.', '.', '.', '.'],
-    ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
-    ['.', '9', '8', '.', '.', '.', '.', '6', '.'],
-    ['8', '.', '.', '.', '6', '.', '.', '.', '3'],
-    ['4', '.', '.', '8', '.', '3', '.', '.', '1'],
-    ['7', '.', '.', '.', '2', '.', '.', '.', '6'],
-    ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
-    ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
-    ['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '6', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '8', '.', '.', '.', '.'],
+    ['9', '.', '.', '.', '7', '5', '.', '.', '.'],
+    ['.', '.', '.', '.', '5', '.', '.', '8', '.'],
+    ['.', '.', '9', '.', '.', '.', '.', '.', '.'],
+    ['2', '.', '6', '.', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '.', '.', '.', '.'],
 ];
 
 console.log(isValidSudoku(board));
