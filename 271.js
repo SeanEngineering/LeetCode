@@ -19,9 +19,27 @@ const encode = (sentence) => {
  */
 const decode = (sentence) => {
     const sentenceArray = [];
+    let counter = '';
+    let numberCounter = 0;
+    let isCounter = true;
     for (let i = 0; i < sentence.length; i++) {
-        sentence[i];
+        if (sentence[i] != '#' && isCounter) {
+            counter += sentence[i];
+        } else if (sentence[i] == '#' && isCounter) {
+            isCounter = false;
+            numberCounter = Number(counter) + i;
+        }
+        if (isCounter == false) {
+            let tokenWord = '';
+            for (let j = i + 1; j < numberCounter + 1; j++) {
+                tokenWord += sentence[j];
+            }
+            i += numberCounter;
+            sentenceArray.push(tokenWord);
+            isCounter = true;
+        }
     }
+    return sentenceArray;
 };
 
-console.log(encode(['this is my test string', 'hello']));
+console.log(decode(encode(['hello', 'world'])));
