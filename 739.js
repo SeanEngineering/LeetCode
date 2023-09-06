@@ -44,4 +44,25 @@ const daysToMaxTemp = (temperatures) => {
     return outputArray;
 };
 
-console.log(daysToMaxTemp([73, 74, 75, 71, 69, 72, 76, 73]));
+/**
+ *
+ * @param {string[]} temperatures
+ * @returns {string[]}
+ */
+const idealBestSolution = (temperatures) => {
+    const outputArray = Array(temperatures.length).fill(0);
+    const stack = []; // [temp, index]
+    for (let i = 0; i < temperatures.length; i++) {
+        while (
+            stack.length >= 1 &&
+            temperatures[i] > stack[stack.length - 1][0]
+        ) {
+            let [stackT, stackI] = stack.pop();
+            outputArray[stackI] = i - stackI;
+        }
+        stack.push([temperatures[i], i]);
+    }
+    return outputArray;
+};
+
+console.log(idealBestSolution([73, 74, 75, 71, 69, 72, 76, 73]));
