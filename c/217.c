@@ -23,4 +23,8 @@ bool containsDuplicate(int *nums, int numsSize)
   {
     struct KeyValue *buckets[HASH_TABLE_SIZE];
   };
+
+  struct HashMap *createHashMap()
+  {
+  }
 }

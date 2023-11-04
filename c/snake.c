@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include <stdlib.h>
+#include <unistd.h>
 int i, j, height = 20, width = 20, gameover, score;
 int x, y, fruitx, fruity, flag;
 
@@ -41,23 +42,24 @@ label2:
 
 void input()
 {
-  if (kbhit())
+  int ch = getch();
+  if (ch != ERR)
   {
-    switch (getch())
+    switch (ch)
     {
-    case "a":
+    case 'a':
       flag = 1;
       break;
-    case "s":
+    case 's':
       flag = 2;
       break;
-    case "d":
+    case 'd':
       flag = 3;
       break;
-    case "w":
+    case 'w':
       flag = 4;
       break;
-    case "x":
+    case 'x':
       gameover = 1;
       break;
     }
@@ -67,12 +69,51 @@ void input()
 void logic()
 {
   // TODO: Implement Logic
-  sleep(0.01);
+  sleep(1);
+  switch (flag)
+  {
+  case 1:
+    y--;
+    break;
+  case 2:
+    x++;
+    break;
+  case 3:
+    y++;
+    break;
+  case 4:
+    x--;
+    break;
+  default:
+    break;
+  }
+  if (x < 0 || x > height || y < 0 || y > width)
+  {
+    gameover = 1;
+  }
+  if (x == fruitx && y == fruity)
+  {
+  label3:
+    fruitx = rand() % 20;
+    if (fruitx == 0)
+      goto label3;
+  label4:
+    fruity = rand() % 20;
+    if (fruity == 0)
+      goto label4;
+    score += 10;
+  }
 }
 
 int main()
 {
-  initscr();
-  draw();
+  int m, n;
+  setup();
+  while (!gameover)
+  {
+    draw();
+    input();
+    logic();
+  }
   return 0;
 }
